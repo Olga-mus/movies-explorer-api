@@ -17,8 +17,8 @@ const { PORT = 3000 } = process.env;
 
 app.use(cors({
   origin: [
-    'https://tritonanta.nomoredomains.sbs',
-    'http://tritonanta.nomoredomains.sbs',
+    'https://olganum.nomorepartiesxyz.ru',
+    'http://olganum.nomorepartiesxyz.ru',
     'http://localhost:3000',
   ],
   credentials: true,
