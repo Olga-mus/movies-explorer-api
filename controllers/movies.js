@@ -64,8 +64,8 @@ module.exports.createFilm = (req, res, next) => {
 
 // удаляем фильм
 module.exports.deleteFilmId = (req, res, next) => {
-  const { id } = req.params;
-  Movie.findById(id)
+  const { _id } = req.params;
+  Movie.findById(_id)
     .then((movie) => {
       if (!movie) {
         next(new NotFound('Фильм с таким id не найден'));
