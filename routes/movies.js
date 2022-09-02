@@ -4,7 +4,7 @@ const { deleteFilmId, getAllSaveFilms, createFilm } = require('../controllers/mo
 
 const { validateDeleteFilmId, validateCreateFilm } = require('../middlewares/validation');
 
-router.delete('/:id', validateDeleteFilmId, deleteFilmId); // удаляет сохранённый фильм по id
+router.delete('/:_id', validateDeleteFilmId, deleteFilmId); // удаляет сохранённый фильм по id
 router.get('/', getAllSaveFilms);// возвращает все сохранённые текущим  пользователем фильмы
 router.post('/', validateCreateFilm, createFilm);// создаёт фильм с переданными в теле// country, director, duration, year, description, image, trailer, nameRU, nameEN и thumbnail, movieId
 
