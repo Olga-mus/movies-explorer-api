@@ -106,4 +106,6 @@ module.exports = {
   validateAuthorization,
   urlRegExp,
   validatePatchUserProfile,
+  validateCreateFilm,
+  validateDeleteFilmId,
 };
