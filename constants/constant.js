@@ -1,6 +1,6 @@
 const regExpURL = /^((https?):\/\/)(www.)?[a-z0-9-]+\.[a-z]+[a-z0-9/\-._~:%?#[\]@!$&='()*+,;]+#?$/i;
 
-const { MONGO_DB, SECRET_KEY } = process.env;
+const { MONGO_DB = 'mongodb://localhost:27017/bitfilmsdb', JWT_SECRET = 'secret_key' } = process.env;
 
 const DOMAINS = {
   origin: [
@@ -14,6 +14,6 @@ const DOMAINS = {
 module.exports = {
   regExpURL,
   MONGO_DB,
-  SECRET_KEY,
+  JWT_SECRET,
   DOMAINS,
 };
