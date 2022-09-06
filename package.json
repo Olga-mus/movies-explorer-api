@@ -1,7 +1,7 @@
 {
   "name": "movies-explorer-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Бэкенд часть SPA приложения Movie Explorer на Express.js",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/Olga-mus/movies-explorer-api.git"
   },
-  "author": "",
+  "author": "olga",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Olga-mus/movies-explorer-api/issues"
@@ -24,9 +24,6 @@
     "celebrate": "^15.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
-    "eslint": "^8.23.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0",
     "express": "^4.18.1",
     "express-rate-limit": "^6.5.2",
     "express-winston": "^4.2.0",
@@ -37,6 +34,9 @@
     "winston": "^3.8.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
   }
 }

@@ -2,7 +2,28 @@ const { checkToken } = require('../helpers/jwt');
 
 const Unauthorized = require('../errors/error401');
 
-// eslint-disable-next-line consistent-return
+// // eslint-disable-next-line consistent-return
+// const isAuthorized = (req, res, next) => {
+//   const auth = req.headers.authorization;
+//   if (!auth) {
+//     // throwUnauthorizedError();
+//     next(new Unauthorized('Авторизуйтесь для доступа'));
+
+//     return;
+//   }
+
+//   let payload;
+//   const token = auth.replace('Bearer ', '');
+//   try {
+//     payload = checkToken(token);
+//   } catch (err) {
+//     // eslint-disable-next-line consistent-return
+//     return next(new Unauthorized('Необходима авторизация'));
+//   }
+//   req.user = payload;
+//   next();
+// };
+
 const isAuthorized = (req, res, next) => {
   const auth = req.headers.authorization;
   if (!auth) {
@@ -17,8 +38,7 @@ const isAuthorized = (req, res, next) => {
   try {
     payload = checkToken(token);
   } catch (err) {
-    // eslint-disable-next-line consistent-return
-    return next(new Unauthorized('Необходима авторизация'));
+    next(new Unauthorized('Необходима авторизация'));
   }
   req.user = payload;
   next();

@@ -1,4 +1,4 @@
-const { notFound } = require('../utils/statusResponse');
+const { notFound } = require('../constants/constant');
 
 class NotFound extends Error {
   constructor(message) {

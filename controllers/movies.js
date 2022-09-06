@@ -5,10 +5,6 @@ const Forbidden = require('../errors/error403');
 const NotFound = require('../errors/error404');
 const InternalServerError = require('../errors/error500');
 
-const {
-  ok,
-} = require('../utils/statusResponse');
-
 // возвращает все сохранённые текущим  пользователем фильмы
 module.exports.getAllSaveFilms = (req, res, next) => {
   Movie.find({})
@@ -18,7 +14,7 @@ module.exports.getAllSaveFilms = (req, res, next) => {
 
 // создаёт фильм с переданными в теле
 //  country, director, duration, year, description,
-// image, trailer, nameRU, nameEN и thumbnail, movieId
+// image, trailerLink, nameRU, nameEN и thumbnail, movieId
 module.exports.createFilm = (req, res, next) => {
   const {
     country,
@@ -27,7 +23,7 @@ module.exports.createFilm = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -42,7 +38,7 @@ module.exports.createFilm = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
@@ -77,7 +73,7 @@ module.exports.deleteFilmId = (req, res, next) => {
       }
       movie.remove()
         .then(() => {
-          res.status(ok).send({ message: 'Фильм успешно удален' });
+          res.send({ message: 'Фильм успешно удален' });
         })
         .catch(next);
     })

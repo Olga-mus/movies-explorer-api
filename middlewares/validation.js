@@ -1,7 +1,12 @@
+const { ObjectId } = require('mongoose').Types;
+
 const { Joi, celebrate } = require('celebrate');
 
-const urlRegExp = /^((https?):\/\/)(www.)?[a-z0-9-]+\.[a-z]+[a-z0-9/\-._~:%?#[\]@!$&='()*+,;]+#?$/i;
+const { invalidId } = require('../constants/constant');
 
+const urlRegExp = /^((https?):\/\/)(www.)?[a-z0-9-]+\.[a-z]+[a-z0-9/\-._~:%?#[\]@!$&='()*+,;]+#?$/i;
+const isLatinSymbols = /^[?!,.A-Za-z0-9\s]+$/;
+const isCyrillicSymbols = /^[?!,.а-яА-ЯёЁ0-9\s]+$/;
 // signup
 const validateUser = celebrate({
   body: Joi.object().keys({
@@ -70,21 +75,23 @@ const validateCreateFilm = celebrate({
     image: Joi
       .string()
       .required()
-      .pattern(new RegExp(urlRegExp)),
-    trailer: Joi
+      .pattern(urlRegExp),
+    trailerLink: Joi
       .string()
       .required()
-      .pattern(new RegExp(urlRegExp)),
+      .pattern(urlRegExp),
     nameRU: Joi
       .string()
-      .required(),
+      .required()
+      .pattern(isCyrillicSymbols),
     nameEN: Joi
       .string()
-      .required(),
+      .required()
+      .pattern(isLatinSymbols),
     thumbnail: Joi
       .string()
       .required()
-      .pattern(new RegExp(urlRegExp)),
+      .pattern(urlRegExp),
     movieId: Joi
       .number()
       .required(),
@@ -97,7 +104,15 @@ const validateDeleteFilmId = celebrate({
     .keys({
       _id: Joi
         .string()
-        .required(),
+        .required()
+        .hex()
+        .length(24)
+        .custom((value, helpers) => {
+          if (ObjectId.isValid(value)) {
+            return value;
+          }
+          return helpers.message(invalidId);
+        }),
     }),
 });
 

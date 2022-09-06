@@ -1,11 +1,11 @@
-// eslint-disable-next-line consistent-return
-function centralHandlerErrors(err, req, res, next) {
+const centralHandlerErrors = (err, req, res, next) => {
   if (err.statusCode) {
-    return res.status(err.statusCode).send({ message: err.message });
+    res.status(err.statusCode).send({ message: err.message });
+  } else {
+    res.status(500).send({ message: 'Что-то пошло не так' });
   }
-  res.status(500).send({ message: 'Что-то пошло не так' });
   next();
-}
+};
 
 module.exports = {
   centralHandlerErrors,

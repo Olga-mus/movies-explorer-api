@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
-const { isEmail } = require('validator');
+const validator = require('validator');
+// const { isEmail } = require('validator');
+const { invalidLink } = require('../constants/constant');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -14,7 +16,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true,
-    validate: [isEmail, 'Введите корректный email'],
+    // validate: [isEmail, 'Введите корректный email'],
+    validate: {
+      validator: (link) => validator.isURL(link),
+      message: invalidLink,
+    },
   },
   password: {
     type: String,

@@ -1,4 +1,4 @@
-const { serverError } = require('../utils/statusResponse');
+const { serverError } = require('../constants/constant');
 
 class InternalServerError extends Error {
   constructor(message) {

@@ -11,17 +11,17 @@ const Conflict = require('../errors/error409');
 const SALT_ROUNDS = 10;
 
 const {
-  ok,
   created,
   MONGO_DUPLICATE_ERROR_CODE,
-} = require('../utils/statusResponse');
+} = require('../constants/constant');
+// const user = require('../models/user');
 
 // получаем инф о текущем пользователе
 module.exports.getCurrentUserProfile = (req, res, next) => {
   const { _id } = req.user;
   User.findById(_id)
     .orFail(() => new NotFound('Пользователь не существует'))
-    .then((user) => res.status(ok).send(user))
+    .then((user) => res.send(user))
     .catch(next);
 };
 
@@ -35,9 +35,12 @@ module.exports.updateCurrentUser = (req, res, next) => {
   )
     .orFail(() => new NotFound('Пользователь с таким id не найден'))
     .then((user) => {
-      res.status(ok).send(user);
+      res.send(user);
     })
     .catch((err) => {
+      if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
+        next(new Conflict('Такой email уже занят'));
+      }
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequest('Некорректные данные'));
       } else {
@@ -45,6 +48,40 @@ module.exports.updateCurrentUser = (req, res, next) => {
       }
     });
 };
+
+// // дорабатываем контроллер создание пользователя
+// module.exports.createUser = (req, res, next) => {
+//   const {
+//     name, email, password,
+//   } = req.body;
+//   // если емэйл и пароль отсутствует - возвращаем ошибку.
+
+//   bcrypt
+//     .hash(password, SALT_ROUNDS)
+//     // eslint-disable-next-line arrow-body-style
+//     .then((hash) => {
+//       return User.create({
+//         name,
+//         email,
+//         password: hash, // записываем хеш в базу,
+//       });
+//     })
+//     // пользователь создан
+//     .then((user) => res.status(created).send({
+//       _id: user._id,
+//       name: user.name,
+//       email: user.email,
+//     }))
+//     .catch((err) => {
+//       if (err.name === 'ValidationError') {
+//         next(new BadRequest('Невалидные данные пользователя'));
+//       } else if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
+//         next(new Conflict('Email занят'));
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
 
 // дорабатываем контроллер создание пользователя
 module.exports.createUser = (req, res, next) => {
@@ -55,14 +92,11 @@ module.exports.createUser = (req, res, next) => {
 
   bcrypt
     .hash(password, SALT_ROUNDS)
-    // eslint-disable-next-line arrow-body-style
-    .then((hash) => {
-      return User.create({
-        name,
-        email,
-        password: hash, // записываем хеш в базу,
-      });
-    })
+    .then((hash) => User.create({
+      name,
+      email,
+      password: hash, // записываем хеш в базу,
+    }))
     // пользователь создан
     .then((user) => res.status(created).send({
       _id: user._id,
@@ -89,18 +123,18 @@ module.exports.login = (req, res, next) => {
       if (!user) {
         // Инструкция throw генерирует исключение и обработка кода
         // переходит в следующий блок catch(next)
-        throw new Unauthorized('Не авторизован');
+        throw new Unauthorized('Неправильная почта или пароль');
       } else {
         return bcrypt
           .compare(password, user.password)
           .then((isPasswordCorrect) => {
             if (!isPasswordCorrect) {
-              throw new Unauthorized('Не авторизован');
+              throw new Unauthorized('Неправильная почта или пароль');
             } else {
               const token = generateToken({ _id: user._id.toString() });
               res.send({ token });
             }
-          }).catch(() => next(new Unauthorized('Неправильный Email или пароль')));
+          }).catch(() => next(new Unauthorized('Неправильная почта или пароль')));
       }
     })
     .catch(next);
