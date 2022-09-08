@@ -10,12 +10,14 @@ router.post('/signup', validateUser, createUser);
 
 router.post('/signin', validateAuthorization, login);
 
-router.use('/users', isAuthorized, userRouter);
+router.use(isAuthorized);
+
+router.use('/users', userRouter);
 // запускаем, при запросе на '/users' срабатывает роутер './routes/users'
 
-router.use('/movies', isAuthorized, movieRouter);
+router.use('/movies', movieRouter);
 // запускаем, при запросе на '/movies' срабатывает роутер './routes/movies'
 
-router.use('*', isAuthorized, pageNotFound);
+router.use('*', pageNotFound);
 
 module.exports = router;

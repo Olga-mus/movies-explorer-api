@@ -40,48 +40,13 @@ module.exports.updateCurrentUser = (req, res, next) => {
     .catch((err) => {
       if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
         next(new Conflict('Такой email уже занят'));
-      }
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      } else if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequest('Некорректные данные'));
       } else {
         next(err);
       }
     });
 };
-
-// // дорабатываем контроллер создание пользователя
-// module.exports.createUser = (req, res, next) => {
-//   const {
-//     name, email, password,
-//   } = req.body;
-//   // если емэйл и пароль отсутствует - возвращаем ошибку.
-
-//   bcrypt
-//     .hash(password, SALT_ROUNDS)
-//     // eslint-disable-next-line arrow-body-style
-//     .then((hash) => {
-//       return User.create({
-//         name,
-//         email,
-//         password: hash, // записываем хеш в базу,
-//       });
-//     })
-//     // пользователь создан
-//     .then((user) => res.status(created).send({
-//       _id: user._id,
-//       name: user.name,
-//       email: user.email,
-//     }))
-//     .catch((err) => {
-//       if (err.name === 'ValidationError') {
-//         next(new BadRequest('Невалидные данные пользователя'));
-//       } else if (err.code === MONGO_DUPLICATE_ERROR_CODE) {
-//         next(new Conflict('Email занят'));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
 
 // дорабатываем контроллер создание пользователя
 module.exports.createUser = (req, res, next) => {

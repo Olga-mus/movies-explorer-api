@@ -106,13 +106,7 @@ const validateDeleteFilmId = celebrate({
         .string()
         .required()
         .hex()
-        .length(24)
-        .custom((value, helpers) => {
-          if (ObjectId.isValid(value)) {
-            return value;
-          }
-          return helpers.message(invalidId);
-        }),
+        .length(24),
     }),
 });
 
