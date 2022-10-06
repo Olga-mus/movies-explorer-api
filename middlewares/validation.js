@@ -82,12 +82,10 @@ const validateCreateFilm = celebrate({
       .pattern(urlRegExp),
     nameRU: Joi
       .string()
-      .required()
-      .pattern(isCyrillicSymbols),
+      .required(),
     nameEN: Joi
       .string()
-      .required()
-      .pattern(isLatinSymbols),
+      .required(),
     thumbnail: Joi
       .string()
       .required()
