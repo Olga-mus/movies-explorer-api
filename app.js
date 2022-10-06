@@ -13,7 +13,7 @@ const routes = require('./routes');
 
 const app = express();
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 mongoose.connect(MONGO_DB);
 
 app.use(requestLogger); // подключаем логгер запросов
