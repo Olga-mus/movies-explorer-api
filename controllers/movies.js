@@ -7,7 +7,8 @@ const InternalServerError = require('../errors/error500');
 
 // возвращает все сохранённые текущим  пользователем фильмы
 module.exports.getAllSaveFilms = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((movies) => res.send(movies))
     .catch(next);
 };
@@ -16,6 +17,7 @@ module.exports.getAllSaveFilms = (req, res, next) => {
 //  country, director, duration, year, description,
 // image, trailerLink, nameRU, nameEN и thumbnail, movieId
 module.exports.createFilm = (req, res, next) => {
+  const owner = req.user._id;
   const {
     country,
     director,
@@ -29,7 +31,7 @@ module.exports.createFilm = (req, res, next) => {
     thumbnail,
     movieId,
   } = req.body;
-  const owner = req.user._id;
+
   Movie.create({
     owner,
     country,
